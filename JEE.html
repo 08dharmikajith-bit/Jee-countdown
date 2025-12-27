@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JEE Main Session 1 Countdown</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --accent-color: #38bdf8;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            color: var(--accent-color);
+            margin-bottom: 2rem;
+            font-weight: bold;
+        }
+
+        #countdown {
+            display: flex;
+            gap: 20px;
+        }
+
+        .time-box {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            min-width: 100px;
+            text-align: center;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .number {
+            display: block;
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 600px) {
+            #countdown { gap: 10px; }
+            .time-box { min-width: 70px; padding: 10px; }
+            .number { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>JEE Main 2026</h1>
+    <div class="subtitle">Session 1 Countdown</div>
+
+    <div id="countdown">
+        <div class="time-box">
+            <span class="number" id="days">00</span>
+            <span class="label">Days</span>
+        </div>
+        <div class="time-box">
+            <span class="number" id="hours">00</span>
+            <span class="label">Hours</span>
+        </div>
+        <div class="time-box">
+            <span class="number" id="minutes">00</span>
+            <span class="label">Mins</span>
+        </div>
+        <div class="time-box">
+            <span class="number" id="seconds">00</span>
+            <span class="label">Secs</span>
+        </div>
+    </div>
+
+    <script>
+        // SET THE EXAM DATE HERE (Year, Month Index (0-11), Day, Hour, Minute)
+        const examDate = new Date("January 22, 2026 09:00:00").getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const gap = examDate - now;
+
+            // Time calculations
+            const second = 1000;
+            const minute = second * 60;
+            const hour = minute * 60;
+            const day = hour * 24;
+
+            if (gap > 0) {
+                const d = Math.floor(gap / day);
+                const h = Math.floor((gap % day) / hour);
+                const m = Math.floor((gap % hour) / minute);
+                const s = Math.floor((gap % minute) / second);
+
+                document.getElementById("days").innerText = d;
+                document.getElementById("hours").innerText = h < 10 ? '0'+h : h;
+                document.getElementById("minutes").innerText = m < 10 ? '0'+m : m;
+                document.getElementById("seconds").innerText = s < 10 ? '0'+s : s;
+            } else {
+                document.getElementById("countdown").innerHTML = "<h2>The Exam has Started!</h2>";
+            }
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown(); // Initial call
+    </script>
+</body>
+</html>
