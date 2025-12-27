@@ -6,16 +6,14 @@
     <title>JEE Main 2026 Countdown</title>
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-color: #f8fafc;
-            --accent-color: #38bdf8;
-            --quote-bg: #1e293b;
+            --bg: #0f172a;
+            --card: #1e293b;
+            --accent: #38bdf8;
+            --text: #f8fafc;
         }
-
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            background-color: var(--bg);
+            color: var(--text);
             font-family: 'Segoe UI', sans-serif;
             display: flex;
             flex-direction: column;
@@ -23,117 +21,100 @@
             justify-content: center;
             min-height: 100vh;
             margin: 0;
-            padding: 20px;
             text-align: center;
         }
-
-        .date-info {
+        .info-panel {
             background: rgba(56, 189, 248, 0.1);
-            padding: 15px 25px;
-            border-radius: 50px;
-            margin-bottom: 20px;
-            border: 1px solid var(--accent-color);
-        }
-
-        .highlight { color: var(--accent-color); font-weight: bold; }
-
-        h1 { margin: 10px 0; font-size: 2.2rem; }
-
-        /* --- Quote Section --- */
-        .quote-container {
-            max-width: 600px;
-            margin: 20px 0;
             padding: 20px;
-            border-left: 4px solid var(--accent-color);
-            background: var(--card-bg);
-            border-radius: 8px;
-            font-style: italic;
+            border-radius: 20px;
+            border: 1px solid var(--accent);
+            margin-bottom: 20px;
         }
-
-        #dailyQuote { font-size: 1.1rem; line-height: 1.5; }
-
-        #countdown {
-            display: flex;
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .time-box {
-            background: var(--card-bg);
+        .highlight { color: var(--accent); font-weight: bold; }
+        
+        #countdown { display: flex; gap: 15px; margin: 25px 0; }
+        .box {
+            background: var(--card);
             padding: 15px;
+            border-radius: 12px;
+            min-width: 70px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .num { display: block; font-size: 2.2rem; font-weight: bold; color: var(--accent); }
+        
+        .quote-box {
+            max-width: 500px;
+            padding: 20px;
+            background: var(--card);
             border-radius: 10px;
-            min-width: 80px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            font-style: italic;
+            margin: 20px;
+            border-left: 5px solid var(--accent);
         }
-
-        .number {
-            display: block;
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: var(--accent-color);
-        }
-
-        .official-link {
-            margin-top: 30px;
-            padding: 12px 25px;
-            border: 2px solid var(--accent-color);
-            color: var(--accent-color);
-            text-decoration: none;
-            border-radius: 5px;
-            transition: 0.3s;
-            font-weight: bold;
-        }
-
-        .official-link:hover {
-            background: var(--accent-color);
-            color: var(--bg-color);
-        }
+        .footer-note { font-size: 0.7rem; opacity: 0.5; margin-top: 30px; }
     </style>
 </head>
 <body>
 
-    <div class="date-info">
-        <p>Today: <span id="currentDate" class="highlight"></span></p>
-        <p>Exam Date: <span class="highlight">January 22, 2026</span></p>
+    <div class="info-panel">
+        <p>Today is: <span id="todayDisplay" class="highlight">Loading...</span></p>
+        <p>JEE Main Date: <span class="highlight">January 22, 2026</span></p>
     </div>
 
     <h1>JEE Main Session 1</h1>
 
-    <div class="quote-container">
-        <p id="dailyQuote">"The secret of getting ahead is getting started."</p>
+    <div class="quote-box">
+        <p id="quote">"Loading your daily motivation..."</p>
     </div>
 
     <div id="countdown">
-        <div class="time-box"><span class="number" id="days">00</span><span>Days</span></div>
-        <div class="time-box"><span class="number" id="hours">00</span><span>Hrs</span></div>
-        <div class="time-box"><span class="number" id="minutes">00</span><span>Mins</span></div>
-        <div class="time-box"><span class="number" id="seconds">00</span><span>Secs</span></div>
+        <div class="box"><span class="num" id="d">00</span>Days</div>
+        <div class="box"><span class="num" id="h">00</span>Hrs</div>
+        <div class="box"><span class="num" id="m">00</span>Mins</div>
+        <div class="box"><span class="num" id="s">00</span>Secs</div>
     </div>
 
-    <a href="https://jeemain.nta.ac.in/" target="_blank" class="official-link">Official NTA Website →</a>
+    <p class="footer-note">Site last loaded at: <span id="loadTime"></span></p>
 
     <script>
-        // Set Today's Date
-        const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        document.getElementById('currentDate').innerText = new Date().toLocaleDateString(undefined, dateOptions);
+        // 1. TODAY'S DATE
+        const now = new Date();
+        const dateStr = now.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        document.getElementById('todayDisplay').innerText = dateStr;
+        document.getElementById('loadTime').innerText = now.toLocaleTimeString();
 
-        // Daily Quotes Logic
+        // 2. DAILY QUOTES Logic
         const quotes = [
-            "Believe you can and you're halfway there.",
-            "Don't stop when you're tired. Stop when you're done.",
-            "JEE is a marathon, not a sprint. Keep moving.",
-            "Success is the sum of small efforts, repeated day in and day out.",
-            "Focus on the process, the result will follow.",
-            "Difficulties in your life do not come to destroy you, but to help you realize your hidden potential.",
-            "The only way to learn mathematics is to do mathematics."
+            "Consistent effort beats talent every time.",
+            "Focus on the next 1 hour, not the next 1 month.",
+            "Mistakes are proof that you are trying.",
+            "Solve one more problem than you did yesterday.",
+            "You are closer than you were yesterday.",
+            "Discipline is doing what needs to be done, even if you don't want to.",
+            "Your future self will thank you for today's hard work."
         ];
+        // This picks a quote based on the day of the year so it only changes at midnight
+        const dayOfYear = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000);
+        document.getElementById('quote').innerText = `"${quotes[dayOfYear % quotes.length]}"`;
 
-        // Pick quote based on the day of the year
-        const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
-        document.getElementById('dailyQuote').innerText = `"${quotes[dayOfYear % quotes.length]}"`;
+        // 3. COUNTDOWN Logic
+        const target = new Date("January 22, 2026 09:00:00").getTime();
+        function update() {
+            const currentTime = new Date().getTime();
+            const gap = target - currentTime;
 
-        // Countdown Logic
-        const examDate = new Date("January 22, 2026 09:00:00").getTime();
-
-        function updateCountdown() {
-            const now = new
+            if (gap > 0) {
+                document.getElementById('d').innerText = Math.floor(gap / (1000 * 60 * 60 * 24));
+                document.getElementById('h').innerText = Math.floor((gap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                document.getElementById('m').innerText = Math.floor((gap % (1000 * 60 * 60)) / (1000 * 60));
+                document.getElementById('s').innerText = Math.floor((gap % (1000 * 60)) / 1000);
+            } else {
+                document.querySelector('h1').innerText = "The Exam has Begun!";
+                document.getElementById('countdown').style.display = "none";
+            }
+        }
+        setInterval(update, 1000);
+        update();
+    </script>
+</body>
+</html>
